@@ -10,6 +10,7 @@ const passport = require('./config/passport');
 const authRoutes = require('./routes/auth');
 const actorRoutes = require('./routes/actor.routes');
 const performanceRoutes = require('./routes/performace.routes');
+const usersRouter = require('./routes/users');
 
 require('dotenv').config()
 const app = express();
@@ -44,6 +45,7 @@ app.use('/api', (req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/actors', actorRoutes);
 app.use('/api/performances', performanceRoutes);
+app.use('/users', usersRouter);
 
 
 mongoose.connect('mongodb+srv://georgebest2409:lADPrfMRmqYQPFda@cluster0.thhps5s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
