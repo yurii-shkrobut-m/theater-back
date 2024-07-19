@@ -1,20 +1,27 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
 const mongoose = require('mongoose');
-const cors = require('cors')
+const cors = require('cors');
+const passport = require('./config/passport');
 
+const authRoutes = require('./routes/auth');
 const actorRoutes = require('./routes/actor.routes');
 const performanceRoutes = require('./routes/performace.routes');
 
-var app = express();
+require('dotenv').config()
+const app = express();
 
 app.use(cors({
-  origin: "http://localhost:4200",
+  origin: process.env.CLIENT_URL,
   credentials: true
 }));
+
+app.get('/', function (req, res) {
+  res.send('Hello World!'); // This will serve your request to '/'.
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -25,9 +32,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.initialize());
 
+app.use('/api', (req, res, next) => {
+  console.log(req.headers)
+  if (req.path.startsWith('/auth') || req.path.startsWith('/public')) {
+    return next();
+  }
+  passport.authenticate('jwt', { session: false })(req, res, next);
+});
+app.use('/api/auth', authRoutes);
 app.use('/api/actors', actorRoutes);
 app.use('/api/performances', performanceRoutes);
+
 
 mongoose.connect('mongodb+srv://georgebest2409:lADPrfMRmqYQPFda@cluster0.thhps5s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
   .then(() => console.log('Connected to MongoDB'))

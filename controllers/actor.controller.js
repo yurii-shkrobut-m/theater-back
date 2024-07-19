@@ -1,6 +1,7 @@
-// controllers/actor.controller.js
-const Actor = require('../models/actor.model');
+
 const mongoose = require("mongoose");
+
+const Actor = require('../models/actor.model');
 const Employment = require('../models/employment.model');
 
 exports.createActor = async (req, res) => {
@@ -77,4 +78,3 @@ exports.deleteActor = async (req, res) => {
   }
 };
 
-// Аналогічно створіть контролери для Performance та Employment

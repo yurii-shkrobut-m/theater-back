@@ -2,9 +2,18 @@
 const mongoose = require('mongoose');
 
 const performanceSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  year: { type: Number, required: true },
-  budget: { type: Number, required: true }
+  name: {
+    type: String,
+    required: true
+  },
+  year: {
+    type: Number,
+    required: true
+  },
+  budget: {
+    type: Number,
+    required: true
+  }
 }, { timestamps: true });
 
 performanceSchema.virtual('cast', {

@@ -1,4 +1,4 @@
-// controllers/employment.controller.js
+
 const Employment = require('../models/employment.model');
 
 exports.createEmployment = async (req, res) => {

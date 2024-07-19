@@ -1,4 +1,4 @@
-// models/actor.model.js
+
 const mongoose = require('mongoose');
 
 const actorSchema = new mongoose.Schema({
