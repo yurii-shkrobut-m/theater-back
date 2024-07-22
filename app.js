@@ -48,7 +48,7 @@ app.use('/api/performances', performanceRoutes);
 app.use('/users', usersRouter);
 
 
-mongoose.connect('mongodb+srv://georgebest2409:lADPrfMRmqYQPFda@cluster0.thhps5s.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect(process.env.CONNECTION_STRING)
   .then(() => console.log('Connected to MongoDB'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
