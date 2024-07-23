@@ -19,6 +19,8 @@
     "morgan": "~1.9.1",
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.1",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

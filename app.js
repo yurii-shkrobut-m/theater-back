@@ -6,6 +6,8 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const passport = require('./config/passport');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const authRoutes = require('./routes/auth');
 const actorRoutes = require('./routes/actor.routes');
@@ -14,6 +16,27 @@ const usersRouter = require('./routes/users');
 
 require('dotenv').config()
 const app = express();
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Theater API',
+      version: '1.0.0',
+      description: 'API документація для Theater Back',
+    },
+    servers: [
+      {
+        url: process.env.SERVER_URL || 'http://localhost:3000',
+        description: 'Development server',
+      },
+    ],
+  },
+  apis: ['./routes/*.js', './models/*.js'], // шляхи до файлів з роутами та моделями
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use(cors({
   origin: process.env.CLIENT_URL,

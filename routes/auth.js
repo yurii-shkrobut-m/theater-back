@@ -4,6 +4,51 @@ const User = require('../models/user');
 const router = express.Router();
 require('dotenv').config()
 
+/**
+ * @swagger
+ * tags:
+ *   name: Authentication
+ *   description: API for user authentication
+ */
+
+/**
+ * @swagger
+ * /api/auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - email
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 user:
+ *                   $ref: '#/components/schemas/UserResponse'
+ *       400:
+ *         description: Registration failed
+ */
 router.post('/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
@@ -16,6 +61,43 @@ router.post('/register', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /api/auth/login:
+ *   post:
+ *     summary: Login a user
+ *     tags: [Authentication]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: User logged in successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 ok:
+ *                   type: boolean
+ *                 user:
+ *                   $ref: '#/components/schemas/UserResponse'
+ *       401:
+ *         description: Invalid email or password
+ *       400:
+ *         description: Login failed
+ */
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
