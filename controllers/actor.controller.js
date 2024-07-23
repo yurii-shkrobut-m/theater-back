@@ -1,9 +1,53 @@
-
 const mongoose = require("mongoose");
-
 const Actor = require('../models/actor.model');
 const Employment = require('../models/employment.model');
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     ActorController:
+ *       type: object
+ *       properties:
+ *         createActor:
+ *           type: function
+ *           description: Creates a new actor
+ *         getActors:
+ *           type: function
+ *           description: Retrieves all actors
+ *         getActor:
+ *           type: function
+ *           description: Retrieves a specific actor by ID
+ *         updateActor:
+ *           type: function
+ *           description: Updates an existing actor
+ *         deleteActor:
+ *           type: function
+ *           description: Deletes an actor and associated employments
+ */
+
+/**
+ * @swagger
+ * /api/actors:
+ *   post:
+ *     summary: Create a new actor
+ *     tags: [Actors]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ActorInput'
+ *     responses:
+ *       201:
+ *         description: Actor created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Actor'
+ *       400:
+ *         description: Invalid request data
+ */
 exports.createActor = async (req, res) => {
   console.log("Actor DTO", req.body)
   try {
@@ -15,6 +59,24 @@ exports.createActor = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/actors:
+ *   get:
+ *     summary: Get all actors
+ *     tags: [Actors]
+ *     responses:
+ *       200:
+ *         description: List of actors
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Actor'
+ *       500:
+ *         description: Server error
+ */
 exports.getActors = async (req, res) => {
   try {
     const actors = await Actor.find()
@@ -24,13 +86,37 @@ exports.getActors = async (req, res) => {
           path: 'performance',
           model: 'Performance'
         }
-      });;
+      });
     res.json(actors);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
+/**
+ * @swagger
+ * /api/actors/{id}:
+ *   get:
+ *     summary: Get an actor by ID
+ *     tags: [Actors]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Actor details
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Actor'
+ *       404:
+ *         description: Actor not found
+ *       500:
+ *         description: Server error
+ */
 exports.getActor = async (req, res) => {
   try {
     const actor = await Actor.findById(req.params.id);
@@ -41,6 +127,36 @@ exports.getActor = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/actors/{id}:
+ *   put:
+ *     summary: Update an actor
+ *     tags: [Actors]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ActorInput'
+ *     responses:
+ *       200:
+ *         description: Actor updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Actor'
+ *       404:
+ *         description: Actor not found
+ *       400:
+ *         description: Invalid request data
+ */
 exports.updateActor = async (req, res) => {
   try {
     const actor = await Actor.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -51,6 +167,26 @@ exports.updateActor = async (req, res) => {
   }
 };
 
+/**
+ * @swagger
+ * /api/actors/{id}:
+ *   delete:
+ *     summary: Delete an actor
+ *     tags: [Actors]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Actor and associated employments deleted successfully
+ *       404:
+ *         description: Actor not found
+ *       400:
+ *         description: Error during deletion
+ */
 exports.deleteActor = async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -77,4 +213,3 @@ exports.deleteActor = async (req, res) => {
     res.status(400).json({ error: error.message });
   }
 };
-
