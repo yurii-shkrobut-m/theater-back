@@ -11,7 +11,7 @@ const swaggerUi = require('swagger-ui-express');
 
 const authRoutes = require('./routes/auth');
 const actorRoutes = require('./routes/actor.routes');
-const performanceRoutes = require('./routes/performace.routes');
+const performanceRoutes = require('./routes/performance.routes');
 const usersRouter = require('./routes/users');
 
 require('dotenv').config()
@@ -32,7 +32,7 @@ const swaggerOptions = {
       },
     ],
   },
-  apis: ['./routes/*.js', './models/*.js', './controllers/*.js'], // шляхи до файлів з роутами та моделями
+  apis: ['./routes/*.js', './models/*.js', './controllers/*.js'],
 };
 
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
