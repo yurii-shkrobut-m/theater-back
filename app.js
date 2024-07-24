@@ -23,7 +23,7 @@ const swaggerOptions = {
     info: {
       title: 'Theater API',
       version: '1.0.0',
-      description: 'API документація для Theater Back',
+      description: 'API doc Theater Back',
     },
     servers: [
       {
